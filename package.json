@@ -1,6 +1,6 @@
 {
   "name": "mint.club-v2-frames",
-  "version": "0.1.34",
+  "version": "0.1.35",
   "private": true,
   "type": "module",
   "scripts": {
@@ -20,7 +20,7 @@
     "jimp": "^0.22.12",
     "ky": "^1.2.2",
     "lodash-es": "^4.17.21",
-    "mint.club-v2-sdk": "0.0.76",
+    "mint.club-v2-sdk": "0.0.77",
     "node-fetch": "^3.3.2",
     "prettier": "^3.2.5",
     "prisma": "^5.10.2",
