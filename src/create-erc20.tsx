@@ -67,7 +67,7 @@ export const app = new Frog<{
   initialState: {
     chain: 'base',
     curveType: 'EXPONENTIAL',
-    royalty: 5,
+    royalty: 0.3,
     stepCount: 20,
     baseToken: {
       address: '0x4200000000000000000000000000000000000006',

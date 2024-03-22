@@ -8,6 +8,6 @@ import { Button } from 'frog';
 export const ERC20StartStep = {
   image: '/token-optimized.gif',
   intents: [
-    <Button value={NAVIGATE.STEP_NEXT}>Start FRC-20 Deploy Wizard ⚡</Button>,
+    <Button value={NAVIGATE.STEP_NEXT}>Start ERC-20 Deploy Wizard ⚡</Button>,
   ],
 };

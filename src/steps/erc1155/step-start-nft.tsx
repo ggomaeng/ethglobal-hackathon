@@ -8,6 +8,6 @@ import { Button } from 'frog';
 export const ERC1155StartStep = {
   image: '/nft-optimized.gif',
   intents: [
-    <Button value={NAVIGATE.STEP_NEXT}>Start FRC-1155 Deploy Wizard ⚡</Button>,
+    <Button value={NAVIGATE.STEP_NEXT}>Start ERC-1155 Deploy Wizard ⚡</Button>,
   ],
 };
