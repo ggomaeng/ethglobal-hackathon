@@ -1,0 +1,125 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum NFTCollectionType {
+  COLLECTION
+  DERIVATIVE
+}
+
+enum CurveType {
+  LINEAR
+  EXPONENTIAL
+  LOGARITHMIC
+  FLAT
+}
+
+enum IpfsStatusType {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+// frame has time limit of 5 seconds, so we need to save this and refresh it when user clicks refresh
+model IpfsStatus {
+  id        Int            @id @default(autoincrement())
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  ipfsHash  String?
+  status    IpfsStatusType @default(PENDING)
+}
+
+// just store chainId and tokenAddress. We can retrieve from the existing monitor or the contract
+model Token {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+
+  chainId      Int
+  frameName    String @unique
+  tokenAddress String
+
+  creator   FarcasterUser? @relation(fields: [creatorId], references: [fid])
+  creatorId Int?
+
+  @@unique([chainId, tokenAddress])
+}
+
+model Nft {
+  id             Int               @id @default(autoincrement())
+  creator        FarcasterUser?    @relation(fields: [farcasterUserFid], references: [fid])
+  collectionType NFTCollectionType
+
+  chainId      Int
+  tokenAddress String
+
+  frameName      String               @unique
+  curveData      CurveData?           @relation(fields: [curveDataId], references: [id])
+  derivativeData DerivativeImageData?
+
+  baseToken        BaseToken? @relation(fields: [baseTokenChainId, baseTokenAddress], references: [chainId, address])
+  baseTokenChainId Int?
+  baseTokenAddress String?
+  farcasterUserFid Int?
+  curveDataId      Int?       @unique
+
+  @@unique([collectionType, chainId, frameName])
+  @@index([collectionType, chainId])
+  @@index([chainId, tokenAddress])
+	@@map("NFT")
+}
+
+model BaseToken {
+  createdAt DateTime @default(now())
+
+  chainId     Int
+  address     String
+  decimals    Int
+  name        String
+  symbol      String
+  imageUrl    String?
+  collections Nft[]
+
+  @@id([chainId, address])
+}
+
+model DerivativeImageData {
+  id     Int      @id @default(autoincrement())
+  svgUrl String
+  colors String[]
+  nft    Nft      @relation(fields: [nftId], references: [id])
+  nftId  Int      @unique
+}
+
+model CurveData {
+  id                Int       @id @default(autoincrement())
+  curveType         CurveType
+  stepCount         Int
+  initialPrice      Float
+  finalPrice        Float
+  maxSupply         Int
+  creatorAllocation Int       @default(0)
+  buyRoyalty        Int       @default(3)
+  sellRoyalty       Int       @default(3)
+
+  nft Nft?
+}
+
+model FarcasterUser {
+  createdAt   DateTime @default(now())
+  fid         Int      @id
+  username    String
+  collections Nft[]
+  tokens      Token[]
+}
