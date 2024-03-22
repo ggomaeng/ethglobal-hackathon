@@ -28,7 +28,7 @@ export const ERC1155Schema = object(
     imageUrl: string([url('imageURL should be a valid URL')]),
     collectionName: string('Collection name should be a string', [
       minLength(1, 'Name should be at least 1 character long'),
-      maxLength(15, 'Name should be at most 50 characters long'),
+      maxLength(50, 'Name should be at most 50 characters long'),
     ]),
     maxSupply: stringToNumber('Max supply should be a number', [
       minValue(1, 'Minimum value for maxSupply is 1'),
