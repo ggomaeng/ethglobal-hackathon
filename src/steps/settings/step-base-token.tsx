@@ -18,7 +18,7 @@ export function BaseTokenStep(chainname: LowerCaseChainNames) {
   const chain = CHAIN_MAP[chainId as SdkSupportedChainIds];
 
   return {
-    title: 'Choose Base Token',
+    title: 'Choose Base Asset',
     image: (
       <div tw="flex flex-col items-center justify-center px-10 text-white">
         <div
