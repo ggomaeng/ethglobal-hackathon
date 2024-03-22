@@ -38,8 +38,7 @@ export async function ERC20CompleteStep({ state }: ERC20StepParams) {
       </div>
     ),
     intents: [
-      <Button.Reset>Go back</Button.Reset>,
-      <Button.Link href={link}>NFT Page</Button.Link>,
+      <Button.Link href={link}>Token Page</Button.Link>,
       <Button.Link href={warpcast}>Share</Button.Link>,
     ],
   };

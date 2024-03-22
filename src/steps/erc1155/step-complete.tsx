@@ -44,7 +44,6 @@ export async function ERC1155CompleteStep({ state }: ERC1155StepParams) {
       </div>
     ),
     intents: [
-      <Button.Reset>Go back</Button.Reset>,
       <Button.Link href={link}>NFT Page</Button.Link>,
       <Button.Link href={warpcast}>Share</Button.Link>,
     ],
