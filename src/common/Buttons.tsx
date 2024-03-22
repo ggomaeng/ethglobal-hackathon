@@ -1,8 +1,8 @@
 /** @jsxImportSource frog/jsx */
 
-import { COMMON_ACTIONS } from './config';
-import { NAVIGATE } from '../navigators/baseFrameNavigator';
 import { Button } from 'frog';
+import { NAVIGATE } from '../navigators/baseFrameNavigator';
+import { COMMON_ACTIONS } from './config';
 
 export const BackButton = (props: { name?: string; action?: string }) => (
   <Button value={NAVIGATE.STEP_BACK} action={props?.action}>

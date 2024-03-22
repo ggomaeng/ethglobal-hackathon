@@ -10,6 +10,7 @@ import { readFile } from 'fs/promises';
 import { Logger } from '../utils/Logger';
 import { startProxy } from '../utils/proxy';
 import { ASSETS_PATH, BASE_FRAMES_PATH } from './common/config';
+import { app as erc1155 } from './create-erc1155';
 
 declare global {
   var cloudflared: string | undefined;
@@ -69,6 +70,8 @@ app.use(async (c, next) => {
   Logger.info(`[${c.req.method}] ${new URL(c.req.url).pathname}`);
   await next();
 });
+
+app.route('/erc1155', erc1155);
 
 if (typeof Bun !== 'undefined') {
   app.get(

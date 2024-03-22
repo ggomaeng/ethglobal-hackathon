@@ -1,21 +1,21 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/jsx-key */
 /** @jsxImportSource frog/jsx */
-import { BackButton } from '../common/Buttons';
-import { CommonFrame, ExtraParams, StepData, getStep } from '../common/getStep';
-import { HandledErrorComponent } from '../helpers/HandledErrorComponent';
-import { UnhandledErrorComponent } from '../helpers/UnhandledErrorComponent';
+import { Button, FrameContext } from 'frog';
+import { NeynarVariables } from 'frog/_lib/middlewares';
+import { FrameImageAspectRatio, FrameIntent } from 'frog/_lib/types/frame';
+import { ValiError } from 'valibot';
 import {
   NextStepNotFound,
   ValidationError,
 } from '../../errors/ValidationError';
 import { Logger } from '../../utils/Logger';
 import { isTrue } from '../../utils/logic';
-import { Button, FrameContext } from 'frog';
-import { NeynarVariables } from 'frog/_lib/middlewares';
-import { FrameImageAspectRatio, FrameIntent } from 'frog/_lib/types/frame';
-import { ValiError } from 'valibot';
-import { SETTINGS } from '../common/config';
+import { BackButton } from '../common/Buttons';
+import { COMMON_ACTIONS, SETTINGS } from '../common/config';
+import { CommonFrame, ExtraParams, StepData, getStep } from '../common/getStep';
+import { HandledErrorComponent } from '../helpers/HandledErrorComponent';
+import { UnhandledErrorComponent } from '../helpers/UnhandledErrorComponent';
 
 export type FrogEnv<T extends object = object> = {
   State: T;
@@ -198,8 +198,8 @@ export async function baseFrameNavigator<
         previousState.settingsButtonPage = 0;
         previousState.settings = undefined;
       } else if (
-        buttonValue === NAVIGATE.STEP_NEXT ||
-        buttonValue !== undefined
+        buttonValue !== COMMON_ACTIONS.REFRESH &&
+        (buttonValue === NAVIGATE.STEP_NEXT || buttonValue !== undefined)
       ) {
         previousState.step++;
         previousState.buttonPage = 0;
