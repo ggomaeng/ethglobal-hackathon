@@ -10,14 +10,12 @@ const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 
 const prismaClientSingleton = () => {
   let prisma: ExtendedPrismaClient;
-  if (typeof window === 'undefined') {
-    if (IS_PRODUCTION) {
-      prisma = extendedClient();
-      return prisma;
-    } else {
-      globalThis.prisma = extendedClient();
-      return globalThis.prisma;
-    }
+  if (IS_PRODUCTION) {
+    prisma = extendedClient();
+    return prisma;
+  } else {
+    globalThis.prisma = extendedClient();
+    return globalThis.prisma;
   }
 };
 

@@ -33,11 +33,13 @@ enum IpfsStatusType {
 
 // frame has time limit of 5 seconds, so we need to save this and refresh it when user clicks refresh
 model IpfsStatus {
-  id        Int            @id @default(autoincrement())
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  ipfsHash  String?
-  status    IpfsStatusType @default(PENDING)
+  id          Int            @id @default(autoincrement())
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  ipfsHash    String?
+  nftSymbol   String?
+  creationFee String?
+  status      IpfsStatusType @default(PENDING)
 }
 
 // just store chainId and tokenAddress. We can retrieve from the existing monitor or the contract
@@ -76,7 +78,7 @@ model Nft {
   @@unique([collectionType, chainId, frameName])
   @@index([collectionType, chainId])
   @@index([chainId, tokenAddress])
-	@@map("NFT")
+  @@map("NFT")
 }
 
 model BaseToken {
