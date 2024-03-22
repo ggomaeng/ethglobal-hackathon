@@ -71,7 +71,7 @@ app.use(async (c, next) => {
   await next();
 });
 
-app.route('/erc1155', erc1155);
+app.route('/frc1155', erc1155);
 
 if (typeof Bun !== 'undefined') {
   app.get(
