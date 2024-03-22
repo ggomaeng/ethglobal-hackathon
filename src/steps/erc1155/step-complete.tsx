@@ -23,19 +23,19 @@ export async function CompleteStep({ state }: ERC1155StepParams) {
     description: 'Your NFT collection is now live!',
     image: (
       <div tw=" flex flex-col items-center justify-center p-10 text-white">
-        <div tw="text-4xl">🎉</div>
         <img
-          tw="mt-5 flex rounded-lg border-2 border-white"
+          tw="flex rounded-lg border border-white/50"
           src={imageUrl}
           width={200}
           height={200}
           alt="img"
         />
+        <div tw="mt-10 text-4xl">🎉</div>
         <div tw="mt-5 flex text-center text-3xl">Deploy Complete!</div>
         <div
           tw="mt-2 text-xl"
           style={{
-            color: colors.primary,
+            color: colors.twitter,
           }}
         >
           Share the link & other users will be able to mint through your NFT
