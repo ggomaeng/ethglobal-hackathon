@@ -5,7 +5,7 @@
 import { NAVIGATE } from '../../navigators/baseFrameNavigator';
 import { Button } from 'frog';
 
-export const StartStep = {
+export const ERC1155StartStep = {
   image: '/nft-optimized.gif',
   intents: [
     <Button value={NAVIGATE.STEP_NEXT}>Start FRC-1155 Deploy Wizard ⚡</Button>,

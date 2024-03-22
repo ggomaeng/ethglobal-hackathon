@@ -8,7 +8,7 @@ import { timeAgo } from '../../../utils/time';
 import { Button } from 'frog';
 import { COMMON_ROUTES } from '../../common/config';
 
-export async function IpfsStep({ state }: ERC1155StepParams) {
+export async function ERC1155IpfsStep({ state }: ERC1155StepParams) {
   const { ipfsStatus } = state;
 
   let buttons = [<BackButton />, <RefreshButton />];

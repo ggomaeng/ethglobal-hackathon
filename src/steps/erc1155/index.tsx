@@ -1,15 +1,15 @@
-import { CollectionNameStep } from '../settings/step-collection-name';
-import { IpfsStep } from './step-ipfs';
-import { StartStep } from '../settings/step-start-nft';
+import { ERC1155CollectionNameStep } from './step-collection-name';
+import { ERC1155IpfsStep } from './step-ipfs';
+import { ERC1155StartStep } from './step-start-nft';
 import { UploadImageStep } from '../settings/step-upload-image';
-import { DeployStep } from './step-deploy';
-import { CompleteStep } from './step-complete';
+import { ERC1155DeployStep } from './step-deploy';
+import { ERC1155CompleteStep } from './step-complete';
 
 export const CREATE_ERC1155_STEPS = [
-  StartStep,
+  ERC1155StartStep,
   UploadImageStep,
-  CollectionNameStep,
-  DeployStep,
-  IpfsStep,
-  CompleteStep,
+  ERC1155CollectionNameStep,
+  ERC1155DeployStep,
+  ERC1155IpfsStep,
+  ERC1155CompleteStep,
 ];

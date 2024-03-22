@@ -5,22 +5,22 @@
 import { Button } from 'frog';
 import { BackButton } from '../../common/Buttons';
 import { SETTINGS } from '../../common/config';
-import { ERC1155StepParams } from '../../create-erc1155';
-import { ERC1155DeployStep } from './step-deploy';
+import { ERC20StepParams } from '../../create-erc20';
+import { ERC20DeployStep } from './step-deploy';
 
-export function ERC1155SettingsStep(params: ERC1155StepParams) {
+export function ERC20SettingsStep(params: ERC20StepParams) {
   const { state } = params;
-  const { collectionName } = state;
+  const { name } = state;
 
   return {
     title: `Collection Settings`,
-    description: collectionName,
-    image: ERC1155DeployStep(params).image,
+    description: name,
+    image: ERC20DeployStep(params).image,
 
     intents: [
       <BackButton action={'/'} />,
-      <Button value={SETTINGS.IMAGE}>Image</Button>,
       <Button value={SETTINGS.NAME}>Name</Button>,
+      <Button value={SETTINGS.SYMBOL}>Symbol</Button>,
       <Button value={SETTINGS.CHAIN}>Chain</Button>,
       <Button value={SETTINGS.MAX_SUPPLY}>Max supply</Button>,
       <Button value={SETTINGS.CREATOR_ALLOCATION}>Creator</Button>,

@@ -11,18 +11,18 @@ import {
 } from 'mint.club-v2-sdk';
 import { colors } from '../../../constants/colors';
 import { COMMON_ROUTES, NFT_ACTIONS } from '../../common/config';
-import { ERC1155StepParams } from '../../create-erc1155';
+import { ERC20StepParams } from '../../create-erc20';
 import { NAVIGATE } from '../../navigators/baseFrameNavigator';
 
-export function ERC1155DeployStep({ state }: ERC1155StepParams) {
+export function ERC20DeployStep({ state }: ERC20StepParams) {
   const {
     chain,
     curveType,
     baseToken,
     creatorAllocation,
-    collectionName,
+    name,
+    symbol,
     finalPrice,
-    imageUrl,
     initialPrice,
     maxSupply,
   } = state;
@@ -36,15 +36,13 @@ export function ERC1155DeployStep({ state }: ERC1155StepParams) {
   else if (curveType === 'LOGARITHMIC') curveImage = '/curve-log.png';
   else if (curveType === 'FLAT') curveImage = '/curve-flat.png';
   return {
-    title: `Deploy Collection`,
-    description: collectionName,
+    title: `Deploy ERC-20 Token`,
+    description: name,
     image: (
       <div tw="flex h-full w-full flex-col items-center justify-center p-10 text-3xl text-white">
-        <div tw="flex items-center">
-          <img src={imageUrl} width={150} height={150} alt="" />
-        </div>
-        <div tw="my-2 flex text-lg text-gray-500">{collectionName}</div>
-
+        <div tw="text-5xl">🪙</div>
+        <div tw="mt-2 flex text-3xl text-white">{name}</div>
+        <div tw="flex text-xl text-gray-500">({symbol})</div>
         <div tw="my-10 flex h-[2px] w-full bg-yellow-500" />
 
         <div tw="flex w-full flex-wrap justify-between">
@@ -125,7 +123,9 @@ export function ERC1155DeployStep({ state }: ERC1155StepParams) {
       <Button value={NAVIGATE.SETTINGS} action={COMMON_ROUTES.settings}>
         ⚙️ Settings
       </Button>,
-      <Button value={NFT_ACTIONS.IPFS}>Deploy</Button>,
+      <Button.Transaction target={COMMON_ROUTES.deploy}>
+        Deploy
+      </Button.Transaction>,
     ],
   };
 }

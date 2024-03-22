@@ -1,18 +1,18 @@
 /* eslint-disable react/jsx-key */
 /** @jsxImportSource frog/jsx */
-import { $Enums, IpfsStatus } from '@prisma/client';
+import { $Enums } from '@prisma/client';
 import { FrameContext, Frog } from 'frog';
 import { NeynarVariables, neynar } from 'frog/middlewares';
 import { LowerCaseChainNames } from 'mint.club-v2-sdk';
 import { NEYNAR_API_KEY } from '../services/server-env';
 import { ASSETS_PATH, COMMON_ROUTES, SETTINGS } from './common/config';
 import { GetStepParams } from './common/getStep';
-import { deployERC1155 } from './handlers/erc1155/deploy';
-import { erc1155Handler } from './handlers/erc1155/erc1155-handler';
-import { ERC1155SettingsHandler } from './handlers/erc1155/erc1155-settings-handler';
+import { deployERC20 } from './handlers/erc20/deploy';
+import { erc20Handler } from './handlers/erc20/erc20-handler';
+import { ERC20SettingsHandler } from './handlers/erc20/erc20-settings-handler';
 import { NavigationState } from './navigators/baseFrameNavigator';
 
-export type CreateERC1155State = {
+export type CreateERC20State = {
   settings?: keyof typeof SETTINGS;
   chain: LowerCaseChainNames;
   curveType: $Enums.CurveType;
@@ -30,37 +30,36 @@ export type CreateERC1155State = {
     symbol: string;
     decimals: number;
   };
+  name: string;
+  symbol: string;
   initialPrice: number;
   finalPrice: number;
   maxSupply: number;
   creatorAllocation: number;
-  collectionName?: string;
-  imageUrl?: string;
-  ipfsStatus?: IpfsStatus;
 };
 
-export type ERC1155Context<Path extends string> = FrameContext<
-  ERC1155RouteEnv,
+export type ERC20Context<Path extends string> = FrameContext<
+  ERC20RouteEnv,
   Path,
   {},
-  ERC1155NavigationState
+  ERC20NavigationState
 >;
 
-export type ERC1155StepParams = GetStepParams<
-  CreateERC1155State,
-  ERC1155NavigationState
+export type ERC20StepParams = GetStepParams<
+  CreateERC20State,
+  ERC20NavigationState
 >;
 
-export type ERC1155NavigationState = NavigationState<CreateERC1155State> &
-  CreateERC1155State;
+export type ERC20NavigationState = NavigationState<CreateERC20State> &
+  CreateERC20State;
 
-export type ERC1155RouteEnv = {
-  State: ERC1155NavigationState;
+export type ERC20RouteEnv = {
+  State: ERC20NavigationState;
   Variables: NeynarVariables;
 };
 
 export const app = new Frog<{
-  State: CreateERC1155State;
+  State: CreateERC20State;
   Variables: NeynarVariables;
 }>({
   assetsPath: ASSETS_PATH,
@@ -76,9 +75,11 @@ export const app = new Frog<{
       symbol: 'WETH',
       decimals: 18,
     },
+    name: '',
+    symbol: '',
     initialPrice: 0.001,
     finalPrice: 0.1,
-    maxSupply: 1_000,
+    maxSupply: 1_000_000,
     creatorAllocation: 0,
   },
 });
@@ -90,6 +91,6 @@ app.use(
   }),
 );
 
-app.frame('/', erc1155Handler);
-app.frame(COMMON_ROUTES.settings, ERC1155SettingsHandler);
-app.transaction(COMMON_ROUTES.deploy, deployERC1155);
+app.frame('/', erc20Handler);
+app.frame(COMMON_ROUTES.settings, ERC20SettingsHandler);
+app.transaction(COMMON_ROUTES.deploy, deployERC20);

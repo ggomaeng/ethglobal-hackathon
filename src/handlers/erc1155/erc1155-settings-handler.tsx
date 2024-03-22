@@ -1,6 +1,10 @@
 /* eslint-disable react/jsx-key */
 /** @jsxImportSource frog/jsx */
 import { cloneDeep } from 'lodash-es';
+import { mintclub } from 'mint.club-v2-sdk';
+import { parse } from 'valibot';
+import { ValidationError } from '../../../errors/ValidationError';
+import { getStatus } from '../../../services/IpfsService';
 import {
   COMMON_ACTIONS,
   COMMON_ROUTES,
@@ -17,25 +21,21 @@ import {
   ERC1155RouteEnv,
 } from '../../create-erc1155';
 import { StepComponent } from '../../helpers/StepComponent';
-import { CollectionNameStep } from '../../steps/settings/step-collection-name';
-import { SettingsStep } from '../../steps/erc1155/step-settings';
 import { baseFrameNavigator } from '../../navigators/baseFrameNavigator';
-import { LowerCaseChainNames, mintclub } from 'mint.club-v2-sdk';
-import { parse } from 'valibot';
-import { ValidationError } from '../../../errors/ValidationError';
-import { uploadToIpfs, getStatus } from '../../../services/IpfsService';
 import { ERC1155Schema } from '../../schemas/erc1155-schema';
-import { NetworkSelectStep } from '../../steps/settings/step-network-select';
+import { ERC1155CollectionNameStep } from '../../steps/erc1155/step-collection-name';
+import { ERC1155SettingsStep } from '../../steps/erc1155/step-settings';
 import { BaseTokenStep } from '../../steps/settings/step-base-token';
 import { ConfirmBaseTokenStep } from '../../steps/settings/step-confirm-base-token';
-import { MaxSupplyStep } from '../../steps/settings/step-max-supply';
 import { CreatorAllocationStep } from '../../steps/settings/step-creator-allocation';
 import { CurveSelectStep } from '../../steps/settings/step-curve-type';
 import { InitialPriceStep } from '../../steps/settings/step-initial-price';
 import { FinalPriceStep } from '../../steps/settings/step-max-price';
+import { MaxSupplyStep } from '../../steps/settings/step-max-supply';
+import { NetworkSelectStep } from '../../steps/settings/step-network-select';
 import { UploadImageStep } from '../../steps/settings/step-upload-image';
 
-export async function settingsHandler(
+export async function ERC1155SettingsHandler(
   context: ERC1155Context<typeof COMMON_ROUTES.settings>,
 ) {
   return baseFrameNavigator<
@@ -56,7 +56,7 @@ export async function settingsHandler(
       // If the buttonValue is COMMON_ACTIONS.SETTINGS, then we don't want to validate
 
       if (currentSetting === SETTINGS.NAME) {
-        frameToReturn = CollectionNameStep;
+        frameToReturn = ERC1155CollectionNameStep;
       } else if (currentSetting === SETTINGS.IMAGE) {
         frameToReturn = UploadImageStep({
           user: context.var.interactor,
@@ -81,7 +81,7 @@ export async function settingsHandler(
       } else if (currentSetting === SETTINGS.FINAL_PRICE) {
         frameToReturn = FinalPriceStep;
       } else {
-        frameToReturn = SettingsStep({
+        frameToReturn = ERC1155SettingsStep({
           state: state,
           previousState: state,
           extraParams: state,
@@ -151,12 +151,6 @@ export async function settingsHandler(
         }
 
         let stepCount = Math.min(Math.ceil(value / 10), 100);
-
-        if (stepCount < 2) {
-          stepCount = Math.max(value, 2);
-        }
-
-        console.log({ stepCount });
 
         previousState.maxSupply = value;
         previousState.stepCount = stepCount;

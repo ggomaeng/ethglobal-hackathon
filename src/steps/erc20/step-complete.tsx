@@ -3,16 +3,16 @@
 /** @jsxImportSource frog/jsx */
 import { Button } from 'frog';
 import queryString from 'query-string';
-import { ERC1155StepParams } from '../../create-erc1155';
 import { colors } from '../../../constants/colors';
+import { ERC20StepParams } from '../../create-erc20';
 
-export async function ERC1155CompleteStep({ state }: ERC1155StepParams) {
-  const { imageUrl, ipfsStatus, chain } = state;
+export async function ERC20CompleteStep({ state }: ERC20StepParams) {
+  const { symbol, chain } = state;
 
-  const link = `https://mint.club/nft/${chain}/${ipfsStatus?.nftSymbol}`;
+  const link = `https://mint.club/token/${chain}/${symbol}`;
 
   const searchParams = queryString.stringify({
-    text: `I just deployed my ERC-1155 Collection!\n\n${link}`,
+    text: `I just deployed my ERC-20 Token!\n\n${link}`,
     'embeds[]': link,
   });
 
@@ -23,13 +23,7 @@ export async function ERC1155CompleteStep({ state }: ERC1155StepParams) {
     description: 'Your NFT collection is now live!',
     image: (
       <div tw=" flex flex-col items-center justify-center p-10 text-white">
-        <img
-          tw="flex rounded-lg border border-white/50"
-          src={imageUrl}
-          width={200}
-          height={200}
-          alt="img"
-        />
+        <div tw="text-5xl">🪙</div>
         <div tw="mt-10 text-4xl">🎉</div>
         <div tw="mt-5 flex text-center text-3xl">Deploy Complete!</div>
         <div

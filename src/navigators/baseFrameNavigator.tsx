@@ -253,21 +253,10 @@ export async function baseFrameNavigator<
       const buttonsToPush = intents.slice(sliceStart, sliceEnd);
       finalIntentsToDisplay.push(...buttonsToPush);
 
-      const isFinalPage = sliceEnd >= intents.length;
-
       if (sliceEnd < intents.length) {
         finalIntentsToDisplay = [
           ...finalIntentsToDisplay,
           <Button value={NAVIGATE.OPTIONS_PAGE_NEXT}>►</Button>,
-        ];
-      }
-
-      if (isSettings && !state.settings && isFinalPage) {
-        finalIntentsToDisplay = [
-          ...finalIntentsToDisplay,
-          <Button action="/" value={NAVIGATE.STEP_BACK}>
-            Back
-          </Button>,
         ];
       }
     } else {
