@@ -41,48 +41,6 @@ export async function erc1155Handler(context: ERC1155Context<'/'>) {
       } else if (buttonValue === COMMON_ACTIONS.SET_NAME) {
         parse(ERC1155Schema.entries.collectionName, inputText);
         previousState.collectionName = inputText;
-      } else if (buttonValue === COMMON_ACTIONS.SET_BASE_TOKEN) {
-        parse(ERC1155Schema.entries.baseToken.entries.address, inputText);
-        const baseToken = mintclub
-          .network(previousState.chain)
-          .token(inputText as string);
-
-        const [name, symbol, decimals] = await Promise.all([
-          baseToken.getName(),
-          baseToken.getSymbol(),
-          baseToken.getDecimals(),
-        ]);
-
-        previousState.baseToken = {
-          address: inputText as string,
-          name,
-          symbol,
-          decimals,
-        };
-      } else if (buttonValue === COMMON_ACTIONS.SET_MAX_SUPPLY) {
-        parse(ERC1155Schema.entries.maxSupply, inputText);
-        const value = Number(inputText);
-        previousState.maxSupply = value;
-        let creatorAllocation = Math.round(0.01 * value);
-        if (creatorAllocation < 100) {
-          creatorAllocation = 0;
-        }
-        previousState.creatorAllocation = creatorAllocation;
-      } else if (buttonValue === COMMON_ACTIONS.SET_INITIAL_PRICE) {
-        parse(ERC1155Schema.entries.initialPrice, inputText);
-        previousState.initialPrice = Number(inputText);
-      } else if (buttonValue === COMMON_ACTIONS.SET_FINAL_PRICE) {
-        parse(ERC1155Schema.entries.finalPrice, inputText);
-
-        const value = Number(inputText);
-
-        if (value < (previousState.initialPrice ?? 0)) {
-          throw new ValidationError(
-            `Final price should be greater than initial price of ${previousState.initialPrice}`,
-          );
-        }
-
-        previousState.finalPrice = value;
       } else if (buttonValue === NFT_ACTIONS.IPFS) {
         const chainId = chainStringToId(previousState.chain);
         const status = await uploadToIpfs({

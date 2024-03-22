@@ -76,10 +76,10 @@ export const app = new Frog<{
       symbol: 'WETH',
       decimals: 18,
     },
-    initialPrice: 0.1,
-    finalPrice: 1,
-    maxSupply: 10_000,
-    creatorAllocation: 100,
+    initialPrice: 0.001,
+    finalPrice: 0.1,
+    maxSupply: 1_000,
+    creatorAllocation: 0,
   },
 });
 

@@ -262,7 +262,7 @@ export async function baseFrameNavigator<
         ];
       }
 
-      if (isSettings && isFinalPage) {
+      if (isSettings && !state.settings && isFinalPage) {
         finalIntentsToDisplay = [
           ...finalIntentsToDisplay,
           <Button action="/" value={NAVIGATE.STEP_BACK}>

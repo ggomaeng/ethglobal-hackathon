@@ -150,7 +150,16 @@ export async function settingsHandler(
           );
         }
 
+        let stepCount = Math.min(Math.ceil(value / 10), 100);
+
+        if (stepCount < 2) {
+          stepCount = Math.max(value, 2);
+        }
+
+        console.log({ stepCount });
+
         previousState.maxSupply = value;
+        previousState.stepCount = stepCount;
       } else if (buttonValue === COMMON_ACTIONS.SET_CREATOR_ALLOCATION) {
         parse(ERC1155Schema.entries.creatorAllocation, inputText);
         const value = Number(inputText);
