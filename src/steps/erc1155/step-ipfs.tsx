@@ -13,7 +13,7 @@ export async function IpfsStep({ state }: ERC1155StepParams) {
 
   let buttons = [<BackButton />, <RefreshButton />];
 
-  let colorText = 'yellow';
+  let colorText = 'white';
   let text = 'Uploading to IPFS';
 
   if (ipfsStatus?.status === 'FAILED') {
