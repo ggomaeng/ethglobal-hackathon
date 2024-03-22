@@ -20,7 +20,7 @@
     "jimp": "^0.22.12",
     "ky": "^1.2.2",
     "lodash-es": "^4.17.21",
-    "mint.club-v2-sdk": "0.0.81",
+    "mint.club-v2-sdk": "0.0.83",
     "node-fetch": "^3.3.2",
     "prettier": "^3.2.5",
     "prisma": "^5.10.2",
