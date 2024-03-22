@@ -13,7 +13,7 @@ export function ERC20SettingsStep(params: ERC20StepParams) {
   const { name } = state;
 
   return {
-    title: `Collection Settings`,
+    title: `ERC-20 Token Settings`,
     description: name,
     image: ERC20DeployStep(params).image,
 
