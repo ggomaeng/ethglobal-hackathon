@@ -20,3 +20,7 @@ Head to http://localhost:5173
 ## Dependencies
 
 TODO:
+
+## TODO LIST
+
+- [ ] allow search params to be passed
