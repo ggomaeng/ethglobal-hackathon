@@ -24,6 +24,7 @@ export async function erc20Handler(context: ERC20Context<'/'>) {
   >({
     path: '/',
     context,
+    browserLocation: 'https://mint.club/create',
     steps: CREATE_ERC20_STEPS,
     deriveState: async (previousState) => {
       const { inputText, buttonValue } = context;

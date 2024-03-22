@@ -24,6 +24,7 @@ export async function erc1155Handler(context: ERC1155Context<'/'>) {
   >({
     path: '/',
     context,
+    browserLocation: 'https://mint.club/create',
     steps: CREATE_ERC1155_STEPS,
     deriveState: async (previousState) => {
       const { inputText, buttonValue } = context;
