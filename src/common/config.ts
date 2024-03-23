@@ -1,7 +1,7 @@
 import { LowerCaseChainNames } from 'mint.club-v2-sdk';
 
 export const ASSETS_PATH = `/frames/assets/`;
-export const BASE_FRAMES_PATH = '/frames/';
+export const BASE_FRAMES_PATH = '/frames';
 
 export type CurveType = 'LINEAR' | 'EXPONENTIAL' | 'LOGARITHMIC' | 'FLAT';
 
