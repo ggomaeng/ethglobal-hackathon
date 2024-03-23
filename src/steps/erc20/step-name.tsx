@@ -24,7 +24,7 @@ export const ERC20NameStep = {
           Tip
         </div>
         <div tw="flex text-center text-lg">
-          DEGEN (Base), Ethereum, Dogecoin etc.
+          DEGEN (Base), Ethereum, Dogecoin, etc.
         </div>
       </div>
     </div>

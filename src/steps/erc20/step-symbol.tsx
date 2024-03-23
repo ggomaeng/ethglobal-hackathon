@@ -23,7 +23,7 @@ export const ERC20SymbolStep = {
         <div tw="mb-5 flex border-b-2 border-yellow-300 px-5 pb-2 text-center text-yellow-300">
           Tip
         </div>
-        <div tw="flex text-center text-lg">DEGEN, ETH, DOGE etc.</div>
+        <div tw="flex text-center text-lg">DEGEN, ETH, DOGE, etc.</div>
       </div>
     </div>
   ),
