@@ -4,14 +4,19 @@ import { $Enums } from '@prisma/client';
 import { FrameContext, Frog } from 'frog';
 import { NeynarVariables, neynar } from 'frog/middlewares';
 import { LowerCaseChainNames } from 'mint.club-v2-sdk';
-import { NEYNAR_API_KEY } from '../services/server-env';
+import { NEYNAR_API_KEY, PINATA_API_JWT } from '../services/server-env';
 import { ASSETS_PATH, COMMON_ROUTES, SETTINGS } from './common/config';
 import { GetStepParams } from './common/getStep';
 import { deployERC20 } from './handlers/erc20/deploy';
 import { erc20Handler } from './handlers/erc20/erc20-handler';
 import { ERC20SettingsHandler } from './handlers/erc20/erc20-settings-handler';
 import { NavigationState } from './navigators/baseFrameNavigator';
-import { fdk } from '.';
+import { PinataFDK } from 'pinata-fdk';
+
+export const fdk = new PinataFDK({
+  pinata_jwt: PINATA_API_JWT,
+  pinata_gateway: 'jade-general-jackal-249.mypinata.cloud',
+});
 
 export type CreateERC20State = {
   settings?: keyof typeof SETTINGS;

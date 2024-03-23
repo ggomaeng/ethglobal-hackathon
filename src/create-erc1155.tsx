@@ -4,14 +4,19 @@ import { $Enums, IpfsStatus } from '@prisma/client';
 import { FrameContext, Frog } from 'frog';
 import { NeynarVariables, neynar } from 'frog/middlewares';
 import { LowerCaseChainNames } from 'mint.club-v2-sdk';
-import { NEYNAR_API_KEY } from '../services/server-env';
+import { NEYNAR_API_KEY, PINATA_API_JWT } from '../services/server-env';
 import { ASSETS_PATH, COMMON_ROUTES, SETTINGS } from './common/config';
 import { GetStepParams } from './common/getStep';
 import { deployERC1155 } from './handlers/erc1155/deploy';
 import { erc1155Handler } from './handlers/erc1155/erc1155-handler';
 import { ERC1155SettingsHandler } from './handlers/erc1155/erc1155-settings-handler';
 import { NavigationState } from './navigators/baseFrameNavigator';
-import { fdk } from '.';
+import { PinataFDK } from 'pinata-fdk';
+
+const fdk = new PinataFDK({
+  pinata_jwt: PINATA_API_JWT,
+  pinata_gateway: 'jade-general-jackal-249.mypinata.cloud',
+});
 
 export type CreateERC1155State = {
   settings?: keyof typeof SETTINGS;

@@ -12,8 +12,6 @@ import { startProxy } from '../utils/proxy';
 import { ASSETS_PATH, BASE_FRAMES_PATH } from './common/config';
 import { app as erc1155 } from './create-erc1155';
 import { app as erc20 } from './create-erc20';
-import { PinataFDK } from 'pinata-fdk';
-import { PINATA_API_JWT } from '../services/server-env';
 
 declare global {
   var cloudflared: string | undefined;
@@ -67,11 +65,6 @@ export const app = new Frog<{
     // debug: true,
     fonts: await getFonts(),
   },
-});
-
-export const fdk = new PinataFDK({
-  pinata_jwt: PINATA_API_JWT,
-  pinata_gateway: 'jade-general-jackal-249.mypinata.cloud',
 });
 
 app.use(async (c, next) => {
