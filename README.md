@@ -69,6 +69,28 @@ if (htmlString) {
 }
 ```
 
+> Also for handling unexpected errors
+
+```ts
+app.hono.onError((error, c) => {
+  console.error(error);
+  const html = getFrameHtml({
+    version: 'vNext',
+    postUrl: `${origin}/frames`,
+    image: `${origin}/frames/assets/error.png`,
+    imageAspectRatio: '1:1',
+    buttons: [
+      {
+        action: 'post',
+        label: 'Go back',
+      },
+    ],
+  });
+
+  return c.html(html);
+});
+```
+
 - 🥲 I wish it was a little more abstracted for common functions like validating all frame messages with a flag.
 
 ### Pinata 🦙
