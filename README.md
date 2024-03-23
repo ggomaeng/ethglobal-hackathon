@@ -12,10 +12,11 @@ curl -fsSL https://bun.sh/install | bash
 brew install oven-sh/bun/bun
 
 bun install
+# set up .env with .env.example
 bun run dev
 ```
 
-Head to http://localhost:5173
+Head to http://localhost:8880/frames
 
 ## Built with 🔨
 
