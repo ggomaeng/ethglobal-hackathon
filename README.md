@@ -2,7 +2,7 @@
 
 > Reach me at [@undefined](https://warpcast.com/undefined) on Warpcast!
 
-![Flow](https://github.com/ggomaeng/ethglobal-hackathon/blob/main/public/flow.drawio.png)
+![Flow](https://github.com/ggomaeng/ethglobal-hackathon/blob/main/public/flowchart.drawio.png)
 
 ## Dev Environment
 
