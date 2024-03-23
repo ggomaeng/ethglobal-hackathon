@@ -1,4 +1,4 @@
-# Made In Frame
+# Mint.club Frames
 
 > Reach me at [@undefined](https://warpcast.com/undefined) on Warpcast!
 
