@@ -1,10 +1,9 @@
-'use server';
 import { SdkSupportedChainIds, mintclub } from 'mint.club-v2-sdk';
 import fetch from 'node-fetch';
 import { prisma } from '../database/prisma';
-import { FILEBASE_API_KEY } from './server-env';
 import { generateNextAvailableSymbol } from '../utils/symbol';
 import { kebabCase } from 'lodash-es';
+import { uploadMetadataToPinata, uploadToPinata } from './PinataService';
 
 export async function uploadToIpfs(params: {
   url: string;
@@ -17,7 +16,8 @@ export async function uploadToIpfs(params: {
   async function upload() {
     console.log('uploading to ipfs & other metadata');
     try {
-      const blob = await (await fetch(url)).blob();
+      const buffer = await (await fetch(url)).arrayBuffer();
+      const blob = new File([buffer], 'image.png');
       const symbolFromName = kebabCase(collectionName);
       const creationFee = await mintclub.network(chainId).bond.getCreationFee();
 
@@ -27,19 +27,17 @@ export async function uploadToIpfs(params: {
         tokenType: 'ERC1155',
       });
 
-      const imageHash = await mintclub.ipfs.upload({
-        filebaseApiKey: FILEBASE_API_KEY,
-        media: blob,
-      });
+      const imageHash = await uploadToPinata(blob);
+      if (!imageHash) throw new Error('Image hash not found');
       console.log({ imageHash });
 
-      const metadataHash = await mintclub.ipfs.uploadMetadata({
-        filebaseApiKey: FILEBASE_API_KEY,
-        image: imageHash as `ipfs://${string}`,
-        name: collectionName,
-      });
+      const metadataHash = await uploadMetadataToPinata(
+        imageHash as `ipfs://${string}`,
+        collectionName,
+      );
 
       console.log({ metadataHash });
+      if (!metadataHash) throw new Error('Metadata hash not found');
       await prisma.ipfsStatus.update({
         where: {
           id: status.id,
@@ -52,6 +50,7 @@ export async function uploadToIpfs(params: {
         },
       });
     } catch (e) {
+      console.error(e);
       await prisma.ipfsStatus.update({
         where: {
           id: status.id,
