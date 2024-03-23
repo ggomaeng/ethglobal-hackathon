@@ -266,6 +266,7 @@ export async function baseFrameNavigator<
     const aspectRatio = (imageAspectRatio || '1:1') as FrameImageAspectRatio;
 
     return context.res({
+      title: 'Mint.club Frames',
       action: path,
       imageAspectRatio: aspectRatio,
       image,

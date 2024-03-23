@@ -111,7 +111,6 @@ app.use(async (c, next) => {
     // Complete replacements according to the mapping provided
     let openFrameTags = metaTags
       .replaceAll('fc:frame:image', 'of:image')
-      .replaceAll('og:image', 'og:image')
       // Assuming a pattern for of:button:$idx replacements
       .replace(/fc:frame:button:(\d+)/g, 'of:button:$1')
       .replace(/fc:frame:button:(\d+):action/g, 'of:button:$1:action')
@@ -119,15 +118,16 @@ app.use(async (c, next) => {
       // Additional replacements based on the provided pattern
       .replaceAll('fc:frame:input:text', 'of:input:text')
       .replaceAll('fc:frame:image:aspect_ratio', 'of:image:aspect_ratio')
-      .replaceAll('fc:frame', 'of:accepts:farcaster')
       .replaceAll('fc:frame:state', 'of:state');
 
     openFrameTags += [
+      `<meta property="of:accepts:farcaster" content="vNext"/>`,
       `<meta property="of:accepts:xmtp" content="2024-02-01"/>`,
       `<meta property="of:accepts:lens" content="1.1"/>`,
     ].join('\n');
 
     html = html.replace(/(<head>)/i, `$1${openFrameTags}`);
+
     c.res = new Response(html, {
       headers: {
         'content-type': 'text/html',
