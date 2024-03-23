@@ -3,7 +3,7 @@
 
 // frog documentation
 // https://frog.fm/platforms/next
-import { Frog } from 'frog';
+import { Button, Frog } from 'frog';
 import { devtools } from 'frog/dev';
 import { serveStatic } from 'frog/serve-static';
 import { readFile } from 'fs/promises';
@@ -12,6 +12,7 @@ import { startProxy } from '../utils/proxy';
 import { ASSETS_PATH, BASE_FRAMES_PATH } from './common/config';
 import { app as erc1155 } from './create-erc1155';
 import { app as erc20 } from './create-erc20';
+import { getFrameHtml } from 'frames.js';
 
 declare global {
   var cloudflared: string | undefined;
@@ -46,18 +47,20 @@ type RootState = {
   error?: string;
 };
 
+const origin =
+  process.env.PROXY && globalThis.cloudflared !== undefined
+    ? globalThis.cloudflared
+    : process.env.NODE_ENV === 'development'
+      ? `http://localhost:${process.env.PORT}`
+      : 'https://mint.club';
+
 export const app = new Frog<{
   State: RootState;
 }>({
   verify: 'silent',
   assetsPath: ASSETS_PATH,
   basePath: BASE_FRAMES_PATH,
-  origin:
-    process.env.PROXY && globalThis.cloudflared !== undefined
-      ? globalThis.cloudflared
-      : process.env.NODE_ENV === 'development'
-        ? `http://localhost:${process.env.PORT}`
-        : 'https://mint.club',
+  origin,
   imageOptions: {
     format: 'png',
     height: 600,
@@ -67,9 +70,39 @@ export const app = new Frog<{
   },
 });
 
+app.hono.onError((error, c) => {
+  console.error(error);
+  const html = getFrameHtml({
+    version: 'vNext',
+    postUrl: `${origin}/frames`,
+    image: `${origin}/frames/assets/error.png`,
+    imageAspectRatio: '1:1',
+    buttons: [
+      {
+        action: 'post',
+        label: 'Go back',
+      },
+    ],
+  });
+
+  return c.html(html);
+});
+
 app.use(async (c, next) => {
   Logger.info(`[${c.req.method}] ${new URL(c.req.url).pathname}`);
   await next();
+});
+
+app.frame('/', async (c) => {
+  return c.res({
+    imageAspectRatio: '1:1',
+    browserLocation: 'https://mint.club',
+    image: 'https://i.imgur.com/7Sww7lT.gif',
+    intents: [
+      <Button action="/erc20">🪙 Deploy ERC-20</Button>,
+      <Button action="/erc1155">🖼️ Deploy ERC-1155</Button>,
+    ],
+  });
 });
 
 app.route('/erc1155', erc1155);
