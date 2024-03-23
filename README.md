@@ -1,6 +1,6 @@
 # Mint.club Frames
 
-> Reach me at [@undefined](https://warpcast.com/undefined) on Warpcast!
+> Reach me at [@undefined](https://warpcast.com/undefined) on Warpcast if you have any questions!
 
 ![Flow](https://github.com/ggomaeng/ethglobal-hackathon/blob/main/public/mintclubframes.drawio.png?raw=true)
 
