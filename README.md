@@ -39,6 +39,7 @@ I believe each framework has its own strengths, and I wanted to leverage the bes
 
 - 👍 Super powerful debugger. Always debugged with frames.js.
 - 👍 Helpful utility functions like `getFrameHtml` & `getFrameFlattened`, which is useful for handling unexpected errors.
+- 👍 Supports XMTP! `getXmtpFrameMessage`
 
 > We use `getFrame` and `getFrameFlattened` on our separate front-end code, which is a huge life saver.
 
@@ -94,6 +95,8 @@ app.hono.onError((error, c) => {
 ```
 
 - 🥲 I wish it was a little more abstracted for common functions like validating all frame messages with a flag.
+
+> I tried implementing XMTP in frog, but
 
 ### Pinata 🦙
 
