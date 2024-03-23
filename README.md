@@ -117,6 +117,12 @@ app.use(
 );
 ```
 
+#### Pinata IPFS SDK
+
+- 👍 All the data (bonding curve data, image, metadata) lives on-chain.
+
+<img src='https://i.imgur.com/3Dgatx9.png' width="100%" style="max-width:500px;">
+
 - 🥲 Wish it had middleware for frog like neynar.
 
 ## TODO LIST
