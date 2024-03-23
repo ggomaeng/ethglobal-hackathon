@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 /** @jsxImportSource frog/jsx */
 import { parse } from 'valibot';
-import { COMMON_ACTIONS } from '../../common/config';
+import { COMMON_ACTIONS, NETWORKS } from '../../common/config';
 import {
   CreateERC20State,
   ERC20Context,
@@ -29,7 +29,9 @@ export async function erc20Handler(context: ERC20Context<'/'>) {
     deriveState: async (previousState) => {
       const { inputText, buttonValue } = context;
 
-      if (buttonValue === COMMON_ACTIONS.SET_NAME) {
+      if (buttonValue === NETWORKS.BASE || buttonValue === NETWORKS.OPTIMISM) {
+        previousState.chain = buttonValue;
+      } else if (buttonValue === COMMON_ACTIONS.SET_NAME) {
         parse(ERC20Schema.entries.name, inputText);
         previousState.name = inputText!;
       } else if (buttonValue === COMMON_ACTIONS.SET_SYMBOL) {
