@@ -99,7 +99,7 @@ app.hono.onError((error, c) => {
 
 - 👍 I would have never thought of "Frame Analytics" if it wasn't for Pinata.
 
-<img src='https://i.imgur.com/7sEgmDQ.png' width="100%" style="max-width:500px;">
+<img src='https://i.imgur.com/cn2vwhr.png' width="100%" style="max-width:500px;">
 
 ```ts
 app.use(
