@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-key */
 /** @jsxImportSource frog/jsx */
 import { Button, FrameContext } from 'frog';
-import { NeynarVariables } from 'frog/_lib/middlewares';
+import { NeynarVariables } from 'frog/middlewares';
 import { FrameImageAspectRatio, FrameIntent } from 'frog/_lib/types/frame';
 import { ValiError } from 'valibot';
 import {
