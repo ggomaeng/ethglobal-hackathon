@@ -13,6 +13,7 @@
     "@filebase/client": "^0.0.5",
     "@neynar/nodejs-sdk": "^1.11.2",
     "@prisma/client": "^5.10.2",
+    "@xmtp/frames-validator": "^0.5.2",
     "clsx": "^2.1.0",
     "dotenv": "^16.4.5",
     "frames.js": "^0.9.3",

@@ -13,6 +13,7 @@ import { ASSETS_PATH, BASE_FRAMES_PATH } from './common/config';
 import { app as erc1155 } from './create-erc1155';
 import { app as erc20 } from './create-erc20';
 import { getFrameHtml } from 'frames.js';
+import { FROG_SECRET } from '../services/server-env';
 
 declare global {
   var cloudflared: string | undefined;
@@ -57,7 +58,7 @@ const origin =
 export const app = new Frog<{
   State: RootState;
 }>({
-  verify: 'silent',
+  verify: false,
   assetsPath: ASSETS_PATH,
   basePath: BASE_FRAMES_PATH,
   origin,
@@ -68,6 +69,7 @@ export const app = new Frog<{
     // debug: true,
     fonts: await getFonts(),
   },
+  secret: FROG_SECRET,
 });
 
 app.hono.onError((error, c) => {
@@ -116,15 +118,19 @@ app.use(async (c, next) => {
       .replace(/fc:frame:button:(\d+):action/g, 'of:button:$1:action')
       .replace(/fc:frame:button:(\d+):target/g, 'of:button:$1:target')
       // Additional replacements based on the provided pattern
+      .replaceAll('fc:frame:post_url', 'of:post_url')
       .replaceAll('fc:frame:input:text', 'of:input:text')
       .replaceAll('fc:frame:image:aspect_ratio', 'of:image:aspect_ratio')
       .replaceAll('fc:frame:state', 'of:state');
 
     openFrameTags += [
+      `<meta property="of:version" content="vNext"/>`,
       `<meta property="of:accepts:farcaster" content="vNext"/>`,
       `<meta property="of:accepts:xmtp" content="2024-02-01"/>`,
       `<meta property="of:accepts:lens" content="1.1"/>`,
     ].join('\n');
+
+    console.log(openFrameTags);
 
     html = html.replace(/(<head>)/i, `$1${openFrameTags}`);
 

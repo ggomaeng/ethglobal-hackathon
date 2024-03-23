@@ -12,6 +12,7 @@ import { erc20Handler } from './handlers/erc20/erc20-handler';
 import { ERC20SettingsHandler } from './handlers/erc20/erc20-settings-handler';
 import { NavigationState } from './navigators/baseFrameNavigator';
 import { PinataFDK } from 'pinata-fdk';
+import { getXmtpFrameMessage } from 'frames.js/xmtp';
 
 export const fdk = new PinataFDK({
   pinata_jwt: PINATA_API_JWT,
@@ -90,19 +91,27 @@ export const app = new Frog<{
   },
 });
 
-app.use(
-  neynar({
+app.use('/', async (c, next) => {
+  const payload = await c.req.json();
+
+  if (payload.clientProtocol.includes('xmtp')) {
+    // TODO - handle xmtp
+    const frameMessage = await getXmtpFrameMessage(payload);
+    // console.log(frameMessage);
+
+    await next();
+    return;
+  }
+
+  await fdk.analyticsMiddleware({
+    frameId: 'erc20',
+  })(c, next);
+
+  await neynar({
     apiKey: NEYNAR_API_KEY,
     features: ['interactor', 'cast'],
-  }),
-);
-
-app.use(
-  '/',
-  fdk.analyticsMiddleware({
-    frameId: 'erc20',
-  }),
-);
+  })(c as any, next);
+});
 
 app.frame('/', erc20Handler);
 app.frame(COMMON_ROUTES.settings, ERC20SettingsHandler);
