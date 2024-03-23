@@ -9,6 +9,9 @@ const envSchema = object({
   MCV2_AWS_SECRET_KEY: string('MCV2_AWS_SECRET_KEY is required'),
   NEYNAR_API_KEY: string('NEYNAR_API_KEY is required'),
   FILEBASE_API_KEY: string('FILEBASE_API_KEY is required'),
+  PINATA_API_KEY: string('PINATA_API_KEY is required'),
+  PINATA_API_SECRET: string('PINATA_API_SECRET is required'),
+  PINATA_API_JWT: string('PINATA_API_JWT is required'),
 });
 
 export const {
@@ -17,4 +20,7 @@ export const {
   MCV2_AWS_SECRET_KEY,
   NEYNAR_API_KEY,
   FILEBASE_API_KEY,
+  PINATA_API_KEY,
+  PINATA_API_SECRET,
+  PINATA_API_JWT,
 } = parse(envSchema, process.env);

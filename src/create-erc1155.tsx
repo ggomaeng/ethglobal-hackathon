@@ -11,6 +11,7 @@ import { deployERC1155 } from './handlers/erc1155/deploy';
 import { erc1155Handler } from './handlers/erc1155/erc1155-handler';
 import { ERC1155SettingsHandler } from './handlers/erc1155/erc1155-settings-handler';
 import { NavigationState } from './navigators/baseFrameNavigator';
+import { fdk } from '.';
 
 export type CreateERC1155State = {
   settings?: keyof typeof SETTINGS;
@@ -87,6 +88,13 @@ app.use(
   neynar({
     apiKey: NEYNAR_API_KEY,
     features: ['interactor', 'cast'],
+  }),
+);
+
+app.use(
+  '/',
+  fdk.analyticsMiddleware({
+    frameId: 'erc1155',
   }),
 );
 

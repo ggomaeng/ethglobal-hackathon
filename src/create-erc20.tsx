@@ -11,6 +11,7 @@ import { deployERC20 } from './handlers/erc20/deploy';
 import { erc20Handler } from './handlers/erc20/erc20-handler';
 import { ERC20SettingsHandler } from './handlers/erc20/erc20-settings-handler';
 import { NavigationState } from './navigators/baseFrameNavigator';
+import { fdk } from '.';
 
 export type CreateERC20State = {
   settings?: keyof typeof SETTINGS;
@@ -88,6 +89,13 @@ app.use(
   neynar({
     apiKey: NEYNAR_API_KEY,
     features: ['interactor', 'cast'],
+  }),
+);
+
+app.use(
+  '/',
+  fdk.analyticsMiddleware({
+    frameId: 'erc20',
   }),
 );
 
