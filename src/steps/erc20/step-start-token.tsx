@@ -6,7 +6,7 @@ import { NAVIGATE } from '../../navigators/baseFrameNavigator';
 import { Button } from 'frog';
 
 export const ERC20StartStep = {
-  image: '/token-optimized.gif',
+  image: 'https://i.imgur.com/mUM6v0B.gif',
   intents: [
     <Button value={NAVIGATE.STEP_NEXT}>Start ERC-20 Deploy Wizard ⚡</Button>,
   ],
