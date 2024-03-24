@@ -148,6 +148,13 @@ export async function community1155Handler(context: Community1155Context<'/'>) {
     extraParams,
     steps: CREATE_COMMUNITY1155_STEPS(extraParams),
     deriveState: async (previousState) => {
+      if (extraParams.baseToken)
+        previousState.baseToken = extraParams.baseToken;
+      if (extraParams.price) previousState.price = extraParams.price;
+      if (extraParams.maxSupply)
+        previousState.maxSupply = extraParams.maxSupply;
+      if (extraParams.chain) previousState.chain = extraParams.chain;
+
       const { inputText, buttonValue } = context;
 
       if (
