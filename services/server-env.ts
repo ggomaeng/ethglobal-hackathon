@@ -12,6 +12,8 @@ const envSchema = object({
   PINATA_API_SECRET: string('PINATA_API_SECRET is required'),
   PINATA_API_JWT: string('PINATA_API_JWT is required'),
   FROG_SECRET: string('FROG_SECRET is required'),
+  ALCHEMY_BASE_API_KEY: string('ALCHEMY_BASE_API_KEY is required'),
+  ALCHEMY_OPTIMISM_API_KEY: string('ALCHEMY_OPTIMISM_API_KEY is required'),
 });
 
 export const {
@@ -23,4 +25,6 @@ export const {
   PINATA_API_SECRET,
   PINATA_API_JWT,
   FROG_SECRET,
+  ALCHEMY_BASE_API_KEY,
+  ALCHEMY_OPTIMISM_API_KEY,
 } = parse(envSchema, process.env);

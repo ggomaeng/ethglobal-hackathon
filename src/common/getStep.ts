@@ -1,9 +1,9 @@
 import { StepComponent } from '../helpers/StepComponent';
 import { NavigationState } from '../navigators/baseFrameNavigator';
 import { NextStepNotFound } from '../../errors/ValidationError';
-import { NeynarUser } from 'frog/_lib/middlewares';
-import { FrameIntent } from 'frog/_lib/types/frame';
+import { NeynarUser } from 'frog/middlewares';
 import { cloneDeep } from 'lodash-es';
+import { FrameIntent } from 'frog';
 
 export type ExtraParams<E extends object | string | undefined | null = object> =
   E;

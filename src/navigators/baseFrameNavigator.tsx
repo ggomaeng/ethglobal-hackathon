@@ -1,9 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/jsx-key */
 /** @jsxImportSource frog/jsx */
-import { Button, FrameContext } from 'frog';
+import { Button, FrameContext, FrameIntent } from 'frog';
 import { NeynarVariables } from 'frog/middlewares';
-import { FrameImageAspectRatio, FrameIntent } from 'frog/_lib/types/frame';
 import { ValiError } from 'valibot';
 import {
   NextStepNotFound,
@@ -16,6 +15,8 @@ import { COMMON_ACTIONS, SETTINGS } from '../common/config';
 import { CommonFrame, ExtraParams, StepData, getStep } from '../common/getStep';
 import { HandledErrorComponent } from '../helpers/HandledErrorComponent';
 import { UnhandledErrorComponent } from '../helpers/UnhandledErrorComponent';
+
+type FrameImageAspectRatio = '1:1' | '1.91:1';
 
 export type FrogEnv<T extends object = object> = {
   State: T;
@@ -146,15 +147,11 @@ export async function baseFrameNavigator<
 
   try {
     const state = await deriveState(async (previousState) => {
-      if (isNavigate(buttonValue)) {
-        stepHeaderElement = summaryFunction?.(extraParams);
+      const result = await beforeNextStep?.(previousState).catch();
+      if (isTrue(result)) {
+        stepHeaderElement = summaryFunction?.(result as Extra);
       } else {
-        const result = await beforeNextStep?.(previousState);
-        if (isTrue(result)) {
-          stepHeaderElement = summaryFunction?.(result as Extra);
-        } else {
-          stepHeaderElement = summaryFunction?.(extraParams);
-        }
+        stepHeaderElement = summaryFunction?.(extraParams);
       }
 
       if (previousState.step === undefined) previousState.step = 0;

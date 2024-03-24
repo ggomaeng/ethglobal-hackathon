@@ -3,7 +3,7 @@
 /** @jsxImportSource frog/jsx */
 
 import { Button, TextInput } from 'frog';
-import { NeynarUser } from 'frog/_lib/middlewares';
+import { NeynarUser } from 'frog/middlewares';
 import { BackButton } from '../../common/Buttons';
 import { NFT_ACTIONS } from '../../common/config';
 

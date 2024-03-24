@@ -11,6 +11,7 @@ import { Logger } from '../utils/Logger';
 import { startProxy } from '../utils/proxy';
 import { ASSETS_PATH, BASE_FRAMES_PATH } from './common/config';
 import { app as erc1155 } from './create-erc1155';
+import { app as community1155 } from './community-1155';
 import { app as erc20 } from './create-erc20';
 import { getFrameHtml } from 'frames.js';
 import { FROG_SECRET } from '../services/server-env';
@@ -69,7 +70,7 @@ export const app = new Frog<{
     // debug: true,
     fonts: await getFonts(),
   },
-  secret: FROG_SECRET,
+  secret: process.env.NODE_ENV === 'production' ? FROG_SECRET : undefined,
 });
 
 app.hono.onError((error, c) => {
@@ -91,15 +92,17 @@ app.hono.onError((error, c) => {
 });
 
 app.use(async (c, next) => {
-  Logger.info(`[${c.req.method}] ${origin}${new URL(c.req.url).pathname}`);
+  Logger.info(`[${c.req.method}] ${new URL(c.req.url).pathname}`);
+
   await next();
-  const isFrame = c.res.headers.get('content-type')?.includes('html');
-  if (isFrame) {
-    let html = await c.res.text();
-    const regex = /<meta.*?\/>/gs;
-    const matches = [...html.matchAll(regex)];
-    let metaTags = matches.map((match) => match[0])?.join?.('');
-    /*
+
+  // const isFrame = c.res.headers.get('content-type')?.includes('html');
+  // if (isFrame) {
+  //   let html = await c.res.text();
+  //   const regex = /<meta.*?\/>/gs;
+  //   const matches = [...html.matchAll(regex)];
+  //   let metaTags = matches.map((match) => match[0])?.join?.('');
+  /*
     of:image	fc:frame:image
     og:image	og:image
     of:button:$idx	fc:frame:button:index
@@ -110,36 +113,34 @@ app.use(async (c, next) => {
     of:accepts:farcaster	fc:frame
     of:state	fc:frame:state
     */
-    // Complete replacements according to the mapping provided
-    let openFrameTags = metaTags
-      .replaceAll('fc:frame:image', 'of:image')
-      // Assuming a pattern for of:button:$idx replacements
-      .replace(/fc:frame:button:(\d+)/g, 'of:button:$1')
-      .replace(/fc:frame:button:(\d+):action/g, 'of:button:$1:action')
-      .replace(/fc:frame:button:(\d+):target/g, 'of:button:$1:target')
-      // Additional replacements based on the provided pattern
-      .replaceAll('fc:frame:post_url', 'of:post_url')
-      .replaceAll('fc:frame:input:text', 'of:input:text')
-      .replaceAll('fc:frame:image:aspect_ratio', 'of:image:aspect_ratio')
-      .replaceAll('fc:frame:state', 'of:state');
+  // Complete replacements according to the mapping provided
+  // let openFrameTags = metaTags
+  //   .replaceAll('fc:frame:image', 'of:image')
+  //   // Assuming a pattern for of:button:$idx replacements
+  //   .replace(/fc:frame:button:(\d+)/g, 'of:button:$1')
+  //   .replace(/fc:frame:button:(\d+):action/g, 'of:button:$1:action')
+  //   .replace(/fc:frame:button:(\d+):target/g, 'of:button:$1:target')
+  //   // Additional replacements based on the provided pattern
+  //   .replaceAll('fc:frame:post_url', 'of:post_url')
+  //   .replaceAll('fc:frame:input:text', 'of:input:text')
+  //   .replaceAll('fc:frame:image:aspect_ratio', 'of:image:aspect_ratio')
+  //   .replaceAll('fc:frame:state', 'of:state');
 
-    openFrameTags += [
-      `<meta property="of:version" content="vNext"/>`,
-      `<meta property="of:accepts:farcaster" content="vNext"/>`,
-      `<meta property="of:accepts:xmtp" content="2024-02-01"/>`,
-      `<meta property="of:accepts:lens" content="1.1"/>`,
-    ].join('\n');
+  // openFrameTags += [
+  //   `<meta property="of:version" content="vNext"/>`,
+  //   `<meta property="of:accepts:farcaster" content="vNext"/>`,
+  //   `<meta property="of:accepts:xmtp" content="2024-02-01"/>`,
+  //   `<meta property="of:accepts:lens" content="1.1"/>`,
+  // ].join('\n');
 
-    console.log(openFrameTags);
+  // html = html.replace(/(<head>)/i, `$1${openFrameTags}`);
 
-    html = html.replace(/(<head>)/i, `$1${openFrameTags}`);
-
-    c.res = new Response(html, {
-      headers: {
-        'content-type': 'text/html',
-      },
-    });
-  }
+  //   c.res = new Response(html, {
+  //     headers: {
+  //       'content-type': 'text/html',
+  //     },
+  //   });
+  // }
 });
 
 app.frame('/', async (c) => {
@@ -156,6 +157,7 @@ app.frame('/', async (c) => {
 
 app.route('/erc1155', erc1155);
 app.route('/erc20', erc20);
+app.route('/community1155', community1155);
 
 if (typeof Bun !== 'undefined') {
   app.get(
