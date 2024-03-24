@@ -96,7 +96,7 @@ app.hono.onError((error, c) => {
 
 - 🥲 I wish it was a little more abstracted for common functions like validating all frame messages with a flag.
 
-> I tried implementing XMTP in frog, but
+> I tried implementing XMTP in frog, but it seems like it's a bigger obstacle than I thought :c
 
 ### Pinata 🦙
 
