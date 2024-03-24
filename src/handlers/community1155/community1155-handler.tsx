@@ -22,7 +22,7 @@ import { Community1155Schema } from '../../schemas/community1155-schema';
 import { CREATE_COMMUNITY1155_STEPS } from '../../steps/community1155';
 
 export async function community1155Handler(context: Community1155Context<'/'>) {
-  const { req, previousState, deriveState } = context;
+  const { req, deriveState } = context;
   const {
     chain,
     tokenAddress,
@@ -46,6 +46,8 @@ export async function community1155Handler(context: Community1155Context<'/'>) {
     price = Number(uncommify(_price));
   }
 
+  const previousState = deriveState();
+
   const extraParams: {
     chain: 'base' | 'optimism';
     price?: number;
@@ -60,7 +62,10 @@ export async function community1155Handler(context: Community1155Context<'/'>) {
   };
 
   const state = deriveState((prev) => {
-    Object.assign(prev, extraParams);
+    if (extraParams.baseToken) prev.baseToken = extraParams.baseToken;
+    if (extraParams.price) prev.price = extraParams.price;
+    if (extraParams.maxSupply) prev.maxSupply = extraParams.maxSupply;
+    if (extraParams.chain) prev.chain = extraParams.chain;
   });
 
   if (!state.baseToken) {
@@ -75,7 +80,6 @@ export async function community1155Handler(context: Community1155Context<'/'>) {
     }
 
     try {
-      console.log('fetch from alchemy');
       const resp = await fetch(alchemyUrl, {
         method: 'POST',
         body: JSON.stringify({
@@ -144,8 +148,6 @@ export async function community1155Handler(context: Community1155Context<'/'>) {
     extraParams,
     steps: CREATE_COMMUNITY1155_STEPS(extraParams),
     deriveState: async (previousState) => {
-      console.log('here');
-      Object.assign(previousState, extraParams);
       const { inputText, buttonValue } = context;
 
       if (
