@@ -1,10 +1,10 @@
-# Mint.club Frames
+# Mint.club Frames 🟪
 
 > Reach me at [@undefined](https://warpcast.com/undefined) on Warpcast if you have any questions!
 
 ![Flow](https://github.com/ggomaeng/ethglobal-hackathon/blob/main/public/mintclubframes.drawio.png?raw=true)
 
-## Dev Environment
+## Running it locally 🚀
 
 Install [Bun](https://bun.sh/)
 
@@ -19,6 +19,14 @@ bun run dev
 ```
 
 Head to http://localhost:8880/frames
+
+## What did we make? ⚡
+
+- [x] Launch an ERC-20 with automated price curve through frames. [example](https://warpcast.com/~/developers/frames?url=https%3A%2F%2Fmint.club%2Fframes%2Ferc20)
+
+- [x] Launch an ERC-1155 with automated price curve through frames. [example](https://warpcast.com/~/developers/frames?url=https%3A%2F%2Fmint.club%2Fframes%2Ferc1155)
+
+- [x] Launch a community ERC-1155 token with base asset predefined through frames. [example](https://warpcast.com/~/developers/frames?url=https%3A%2F%2Fmint.club%2Fframes%2Fcommunity1155%2Fbase%2F0x4ed4e862860bed51a9570b96d89af5e1b0efefed)
 
 ## Built with 🔨
 
@@ -104,7 +112,7 @@ app.hono.onError((error, c) => {
 
 - 👍 I would have never thought of "Frame Analytics" if it wasn't for Pinata.
 
-<img src='https://i.imgur.com/cn2vwhr.png' width="100%" style="max-width:500px;">
+<img src='https://i.imgur.com/GS07gsT.png' width="100%" style="max-width:500px;">
 
 ```ts
 app.use(
@@ -130,6 +138,51 @@ app.use(
 
 - 🥲 Wish it had middleware for frog like neynar.
 
-## TODO LIST
+```ts
+// PinataService.ts
+import fetch from 'node-fetch';
+import { PINATA_API_JWT } from './server-env';
 
-- [ ] allow search params to be passed
+export async function uploadToPinata(blob: Blob) {
+  const data = new FormData();
+  data.append('file', blob);
+
+  const res = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${PINATA_API_JWT}`,
+    },
+    body: data,
+  });
+
+  const { IpfsHash } = (await res.json()) as {
+    IpfsHash: string;
+  };
+  return `ipfs://${IpfsHash}`;
+}
+
+export async function uploadMetadataToPinata(
+  imageHash: `ipfs://${string}`,
+  name: string,
+) {
+  const defaultExternalLink = `https://mint.club`;
+  const defaultDescription = [
+    `A Bonding Curved ERC-1155 token powered by mint.club bonding curve protocol.`,
+    defaultExternalLink,
+  ].join('\n\n');
+
+  const finalMetadata = {
+    name,
+    description: defaultDescription,
+    image: imageHash,
+    external_url: defaultExternalLink,
+    attributes: [],
+  };
+
+  const metadata = JSON.stringify(finalMetadata);
+  const metadataBuffer = new File([metadata], 'metadata.json', {
+    type: 'application/json',
+  });
+  return uploadToPinata(metadataBuffer);
+}
+```
